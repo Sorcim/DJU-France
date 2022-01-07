@@ -2,12 +2,9 @@
 # For more information see: https://help.github.com/actions/language-and-framework-guides/using-nodejs-with-github-actions
 
 name: Node.js CI TEST
-
 on: [push, pull_request]
-
 jobs:
-  build:
-
+  test:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -16,3 +13,13 @@ jobs:
       - run: npm ci
       - run: npm run build --if-present
       - run: npm test
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Login to DockerHub Registry
+        run: echo ${{ secrets.DOCKERHUB_PASSWORD }} | docker login -u ${{ secrets.DOCKERHUB_USERNAME }} --password-stdin
+      - name: Build the tagged Docker image
+        run: docker build . --file Dockerfile --tag sorcim/djujs:develop
+      - name: Push the tagged Docker image
+        run: docker push sorcim/djujs:develop
