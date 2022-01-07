@@ -1,6 +1,6 @@
 FROM node:lts-alpine
-COPY . /app
+COPY ./build /app
 WORKDIR /app
-RUN npm i
+RUN npm ci --production
 EXPOSE 80
-CMD ["npm", "start"]
+CMD ["node", "server.js"]
