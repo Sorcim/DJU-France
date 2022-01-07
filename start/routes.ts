@@ -20,4 +20,6 @@
 
 import Route from "@ioc:Adonis/Core/Route"
 
-Route.get("/", async () => {})
+Route.get("/", async () => {
+  return "hello world"
+})
