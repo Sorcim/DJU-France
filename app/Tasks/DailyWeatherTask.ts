@@ -6,7 +6,7 @@ import { DateTime } from "luxon"
 
 export default class DailyWeatherTask extends BaseTask {
   public static get schedule() {
-    return "* * * * * *"
+    return "0 0 12 * * *"
   }
 
   /**
