@@ -9,7 +9,7 @@ export default class Temperatures extends BaseSchema {
       table.integer("min")
       table.integer("max")
       table.date("date")
-      table.integer("city_id").unsigned().references("cities.id").onDelete("CASCADE")
+      table.integer("cities_id").unsigned().references("cities.id").onDelete("CASCADE")
     })
   }
 
