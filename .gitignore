@@ -3,6 +3,7 @@ build
 .vscode
 .DS_STORE
 tmp
+.env.prop
 
 
 
