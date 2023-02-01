@@ -1,0 +1,32 @@
+version: '3.8'
+
+services:
+  adonis_app:
+    container_name: DJU
+    build:
+      context: .
+      target: dependencies
+    ports:
+      - ${PORT}:${PORT}
+    env_file:
+      - .env
+    volumes:
+      - ./:/app
+    command: node ace serve --watch --node-args="--inspect=0.0.0.0"
+
+  postgres:
+    image: postgres
+    container_name: dju_postgres
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-postgres}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-admin}
+      POSTGRES_DB: ${POSTGRES_DB:-watch}
+      POSTGRES_HOST_AUTH_METHOD: md5
+    volumes:
+      - postgres:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    restart: unless-stopped
+volumes:
+  postgres:
+    driver: local
