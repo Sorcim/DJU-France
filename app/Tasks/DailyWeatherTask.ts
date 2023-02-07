@@ -24,12 +24,14 @@ export default class DailyWeatherTask extends BaseTask {
       fetch(
         `https://api.openweathermap.org/data/2.5/weather?id=${city?.owId}&units=metric&appid=${api}`
       )
-        .then(async response => {
-          const main = response.data.main
-          if (main) {
+        .then(response => {
+          return response.json()
+        })
+        .then(async data => {
+          if (data.main) {
             await city.related("temperatures").create({
-              min: main.temp_min,
-              max: main.temp_max,
+              min: data.main.temp_min,
+              max: data.main.temp_max,
               date: DateTime.now(),
             })
           }

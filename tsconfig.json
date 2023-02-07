@@ -30,6 +30,7 @@
       "@adonisjs/repl",
       "adonis5-scheduler",
       "@adonisjs/lucid"
-    ]
+    ],
+    "lib": ["DOM"]
   }
 }
