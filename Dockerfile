@@ -18,6 +18,5 @@ ENV HOST=$HOST
 COPY ./package*.json ./
 COPY --from=build /app/build .
 RUN npm ci --production
-RUN node ace migration:run --force
 EXPOSE $PORT
 CMD [ "node", "server.js" ]
