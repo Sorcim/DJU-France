@@ -16,7 +16,9 @@ ENV NODE_ENV=production
 ENV PORT=$PORT
 ENV HOST=$HOST
 COPY ./package*.json ./
-RUN npm ci --production
+RUN node ace build --production
 COPY --from=build /app/build .
+WORKDIR /app/build
+RUN npm ci --production
 EXPOSE $PORT
 CMD [ "node", "server.js" ]
