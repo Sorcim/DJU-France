@@ -5,15 +5,15 @@ export default class TemperatureFloats extends BaseSchema {
 
   public async up() {
     this.schema.alterTable(this.tableName, table => {
-      table.float("min")
-      table.float("max")
+      table.float("min").alter()
+      table.float("max").alter()
     })
   }
 
   public async down() {
     this.schema.alterTable(this.tableName, table => {
-      table.integer("min")
-      table.integer("max")
+      table.integer("min").alter()
+      table.integer("max").alter()
     })
   }
 }
