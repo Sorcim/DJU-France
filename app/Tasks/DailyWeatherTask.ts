@@ -5,7 +5,7 @@ import { DateTime } from "luxon"
 
 export default class DailyWeatherTask extends BaseTask {
   public static get schedule() {
-    return "0 0 12 * * *"
+    return "30 /1 * * * *"
   }
 
   /**
@@ -19,8 +19,12 @@ export default class DailyWeatherTask extends BaseTask {
   public async handle() {
     const api = Env.get("OW_API")
     const cities = await City.all()
-
-    cities.map(city => {
+    cities.map(async city => {
+      // @ts-ignore
+      const temperature = await Temperature.query()
+        .where("city_id", city.id)
+        .andWhere("date", DateTime.now())
+        .first()
       fetch(
         `https://api.openweathermap.org/data/2.5/weather?id=${city?.owId}&units=metric&appid=${api}`
       )
@@ -28,7 +32,11 @@ export default class DailyWeatherTask extends BaseTask {
           return response.json()
         })
         .then(async data => {
-          if (data.main) {
+          if (temperature) {
+            temperature.min = Math.min(data.main.temp_min, parseInt(temperature.min)).toString()
+            temperature.max = Math.max(data.main.temp_max, parseInt(temperature.max)).toString()
+            await temperature.save()
+          } else {
             await city.related("temperatures").create({
               min: data.main.temp_min,
               max: data.main.temp_max,
