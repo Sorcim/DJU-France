@@ -1,6 +1,7 @@
 import { BaseTask } from "adonis5-scheduler/build"
 import Env from "@ioc:Adonis/Core/Env"
 import City from "App/Models/City"
+import Temperature from "App/Models/Temperature"
 import { DateTime } from "luxon"
 
 export default class DailyWeatherTask extends BaseTask {
@@ -22,9 +23,9 @@ export default class DailyWeatherTask extends BaseTask {
     const api = Env.get("OW_API")
     const cities = await City.all()
     cities.map(async city => {
-      // @ts-ignore
       const temperature = await Temperature.query()
         .where("city_id", city.id)
+        // @ts-ignore
         .andWhere("date", DateTime.now())
         .first()
       fetch(
