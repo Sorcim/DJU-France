@@ -6,7 +6,7 @@ import { DateTime } from "luxon"
 
 export default class DailyWeatherTask extends BaseTask {
   public static get schedule() {
-    return "0 * * * * *"
+    return "* 0 */1 * * *"
   }
 
   /**
@@ -48,7 +48,8 @@ export default class DailyWeatherTask extends BaseTask {
           }
         })
         .catch(error => {
-          console.log(error)
+          // @ts-ignore
+          this.logger.error(error)
         })
     })
   }
