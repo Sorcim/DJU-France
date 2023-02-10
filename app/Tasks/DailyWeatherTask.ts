@@ -17,6 +17,8 @@ export default class DailyWeatherTask extends BaseTask {
   }
 
   public async handle() {
+    // @ts-ignore
+    this.logger.info("DailyWeatherTask is running...")
     const api = Env.get("OW_API")
     const cities = await City.all()
     cities.map(async city => {
