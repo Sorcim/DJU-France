@@ -3,6 +3,7 @@ import Env from "@ioc:Adonis/Core/Env"
 import City from "App/Models/City"
 import Temperature from "App/Models/Temperature"
 import { DateTime } from "luxon"
+import { Error } from "memfs/lib/internal/errors"
 
 export default class DailyWeatherTask extends BaseTask {
   public static get schedule() {
@@ -34,7 +35,11 @@ export default class DailyWeatherTask extends BaseTask {
         `https://api.openweathermap.org/data/2.5/weather?id=${city?.owId}&units=metric&appid=${api}`
       )
         .then(response => {
-          return response.json()
+          if (response.ok) {
+            return response.json()
+          } else {
+            throw new Error(response.statusText)
+          }
         })
         .then(async data => {
           if (temperature) {
@@ -51,7 +56,7 @@ export default class DailyWeatherTask extends BaseTask {
         })
         .catch(error => {
           // @ts-ignore
-          this.logger.error(error)
+          this.logger.error(`Error on city ${city.id} : ${error}`)
         })
     })
   }
