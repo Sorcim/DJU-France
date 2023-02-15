@@ -43,8 +43,8 @@ export default class DailyWeatherTask extends BaseTask {
         })
         .then(async data => {
           if (temperature) {
-            temperature.min = Math.min(data.main.temp_min, parseInt(temperature.min)).toString()
-            temperature.max = Math.max(data.main.temp_max, parseInt(temperature.max)).toString()
+            temperature.min = Math.min(data.main.temp_min, temperature.min)
+            temperature.max = Math.max(data.main.temp_max, temperature.max)
             await temperature.save()
           } else {
             await city.related("temperatures").create({
