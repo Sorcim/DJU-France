@@ -1,4 +1,5 @@
 import { ApplicationContract } from "@ioc:Adonis/Core/Application"
+import Env from "@ioc:Adonis/Core/Env"
 
 export default class AppProvider {
   constructor(protected app: ApplicationContract) {}
@@ -13,8 +14,10 @@ export default class AppProvider {
 
   public async ready() {
     // App is ready
-    const scheduler = this.app.container.use("Adonis/Addons/Scheduler")
-    scheduler.run()
+    if (Env.get("NODE_ENV", "development") !== "development") {
+      const scheduler = this.app.container.use("Adonis/Addons/Scheduler")
+      scheduler.run()
+    }
   }
 
   public async shutdown() {
